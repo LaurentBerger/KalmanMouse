@@ -17,9 +17,9 @@ struct mouse_info_struct mouse_info = {-1,-1}, last_mouse;
             // plot points
 #define drawCross( center, color, d )                                 \
 line( img, Point( center.x - d, center.y - d ),                \
-Point( center.x + d, center.y + d ), color, 2, CV_AA, 0); \
+Point( center.x + d, center.y + d ), color, 2, LINE_AA, 0); \
 line( img, Point( center.x + d, center.y - d ),                \
-Point( center.x - d, center.y + d ), color, 2, CV_AA, 0 )
+Point( center.x - d, center.y + d ), color, 2, LINE_AA, 0 )
 
 
 vector<Point> mousev,kalmanv;
@@ -72,9 +72,9 @@ int main (int argc, char * const argv[])
     KF.measurementMatrix = (Mat_<float>(2, 6) << 1,0,1,0,0.5,0, 0,1,0,1,0,0.5);
   
     setIdentity(KF.measurementMatrix);
-    setIdentity(KF.processNoiseCov, Scalar::all(1e-1));
+    setIdentity(KF.processNoiseCov, Scalar::all(5e-1));
     setIdentity(KF.measurementNoiseCov, Scalar::all(1e1));
-    setIdentity(KF.errorCovPost, Scalar::all(.1));
+    setIdentity(KF.errorCovPost, Scalar::all(.5));
 
     mousev.clear();
     kalmanv.clear();
@@ -159,7 +159,7 @@ int main2 (int argc, char * const argv[]) {
   KF.measurementMatrix = (Mat_<float>(2, 6) << 1,0,1,0,0.5,0, 0,1,0,1,0,0.5);
   
     setIdentity(KF.measurementMatrix);
-    setIdentity(KF.processNoiseCov, Scalar::all(1e-4));
+    setIdentity(KF.processNoiseCov, Scalar::all(1e-1));
     setIdentity(KF.measurementNoiseCov, Scalar::all(1e-1));
     setIdentity(KF.errorCovPost, Scalar::all(.1));
     if (0 == 1)
@@ -252,12 +252,6 @@ int main2 (int argc, char * const argv[]) {
    Point statePt(estimated.at<float>(0),estimated.at<float>(1));
    kalmanv.push_back(statePt);
    
-            // plot points
-#define drawCross( center, color, d )                                 \
-line( img, Point( center.x - d, center.y - d ),                \
-Point( center.x + d, center.y + d ), color, 2, CV_AA, 0); \
-line( img, Point( center.x + d, center.y - d ),                \
-Point( center.x - d, center.y + d ), color, 2, CV_AA, 0 )
 
             img = Scalar::all(0);
             drawCross( statePt, Scalar(255,255,255), 5 );
